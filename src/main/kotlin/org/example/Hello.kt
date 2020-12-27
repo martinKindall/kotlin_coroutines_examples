@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 // is completed
 
 fun main() = runBlocking {
-    timeOutExample()
+    globalScopeIsLikeADaemonThread()
 }
 
 fun main2() = runBlocking<Unit> {
@@ -46,14 +46,16 @@ suspend fun launchManyIsSafe() = coroutineScope {
 }
 
 suspend fun globalScopeIsLikeADaemonThread() {
-    GlobalScope.launch {
+    val job = GlobalScope.launch {
         repeat(1000) { i ->
             println("Im sleeping $i...")
             delay(500L)
         }
     }
 
-    delay(1300L)
+    job.join()  // unlike coroutineScope and launch,
+                // globalScope.launch() needs a join() in order
+                // to be waited
 }
 
 suspend fun cancellingExample() = coroutineScope {
@@ -136,4 +138,23 @@ suspend fun timeOutExample() = coroutineScope {
     }
 
     println("Waiting for timeout completion")
+}
+
+suspend fun timeOutInsideTryFinally() = coroutineScope {
+    val job = launch {
+        var notAsignedInt: Int? = null
+        try {
+            withTimeout(2000L) {
+                delay(1000L)
+                println("Hello there, just testing some timeouts")
+                notAsignedInt = 15
+            }
+        } finally {
+            notAsignedInt?.let {
+                println("The int is $it")
+            }
+        }
+    }
+
+    println("Just waiting")
 }
