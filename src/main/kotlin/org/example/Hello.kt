@@ -5,7 +5,12 @@ import kotlinx.coroutines.*
 // runBlocking doesnt complete until
 // every coroutine launched in its scope
 // is completed
-fun main() = runBlocking<Unit> {
+
+fun main() = runBlocking {
+    cancellingExample()
+}
+
+fun main2() = runBlocking<Unit> {
 
     launch {
         emitMsg()
@@ -49,4 +54,17 @@ suspend fun globalScopeIsLikeADaemonThread() {
     }
 
     delay(1300L)
+}
+
+suspend fun cancellingExample() = coroutineScope {
+    val job = launch {
+        println("Heavy calculation has begun...")
+        delay(5000L)
+        println("Calculation has finished")
+    }
+    delay(2000L)
+    println("User has cancelled")
+    job.cancel()
+    job.join()
+    println("Finished")
 }
