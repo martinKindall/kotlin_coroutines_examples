@@ -3,10 +3,10 @@ package org.example
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.concurrent.thread
-import kotlin.coroutines.*
 
-fun main() {
+fun main() = runBlocking<Unit> {
 
     GlobalScope.launch {
         delay(1000L)
@@ -19,6 +19,7 @@ fun main() {
     }
 
     println("Hello ")
-    Thread.sleep(2000L) // block main thread to keen JVM alive
+//    Thread.sleep(2000L) // block main thread to keen JVM alive
+    delay(2000L)
     println("Learning Coroutines in Kotlin")
 }
