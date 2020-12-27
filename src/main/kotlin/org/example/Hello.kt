@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 // is completed
 
 fun main() = runBlocking {
-    doesNotCancelExample()
+    doesCancelExample()
 }
 
 fun main2() = runBlocking<Unit> {
@@ -82,6 +82,24 @@ suspend fun doesNotCancelExample() = coroutineScope {
         }
     }
     delay(1300L)
+    println("main: I am tired of waiting")
+    job.cancelAndJoin()
+    println("main: Now I can quit")
+}
+
+suspend fun doesCancelExample() = coroutineScope {
+    val startTime = System.currentTimeMillis()
+    val job = launch(Dispatchers.Default) {
+        var nextPrintTime = startTime
+        var i = 0
+        while (isActive) {
+            if (System.currentTimeMillis() >= nextPrintTime) {
+                println("job: I am sleeping ${i++} ...")
+                nextPrintTime += 500L
+            }
+        }
+    }
+    delay(5000L)
     println("main: I am tired of waiting")
     job.cancelAndJoin()
     println("main: Now I can quit")
