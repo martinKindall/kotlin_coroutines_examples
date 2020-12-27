@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 // is completed
 
 fun main() = runBlocking {
-    doesCancelExample()
+    finallyClause()
 }
 
 fun main2() = runBlocking<Unit> {
@@ -100,6 +100,24 @@ suspend fun doesCancelExample() = coroutineScope {
         }
     }
     delay(5000L)
+    println("main: I am tired of waiting")
+    job.cancelAndJoin()
+    println("main: Now I can quit")
+}
+
+suspend fun finallyClause() = coroutineScope {
+    val job = launch {
+        try {
+            repeat(1000) { i ->
+                println("I am sleeping: $i ...")
+                delay(500L)
+            }
+        } finally {
+            println("job: I am finished.")
+        }
+    }
+    println("main: let us wait")
+    delay(3000L)
     println("main: I am tired of waiting")
     job.cancelAndJoin()
     println("main: Now I can quit")
