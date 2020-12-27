@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 // is completed
 
 fun main() = runBlocking {
-    finallyClause()
+    timeOutExample()
 }
 
 fun main2() = runBlocking<Unit> {
@@ -125,4 +125,15 @@ suspend fun finallyClause() = coroutineScope {
     println("main: I am tired of waiting")
     job.cancelAndJoin()
     println("main: Now I can quit")
+}
+
+suspend fun timeOutExample() = coroutineScope {
+    withTimeoutOrNull(3000L) {
+        repeat(1000) { i ->
+            println("job: I am sleeping $i ...")
+            delay(500L)
+        }
+    }
+
+    println("Waiting for timeout completion")
 }
