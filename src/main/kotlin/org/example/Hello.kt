@@ -113,7 +113,11 @@ suspend fun finallyClause() = coroutineScope {
                 delay(500L)
             }
         } finally {
-            println("job: I am finished.")
+            withContext(NonCancellable) {
+                println("job: I am finished.")
+                delay(2000L)
+                println("job: I delayed because I am non-cancellable")
+            }
         }
     }
     println("main: let us wait")
