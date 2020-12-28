@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 // is completed
 
 fun main() = runBlocking<Unit> {
-    showThreadsNames()
+    childrenDoNotNeedToBeJoined()
 }
 
 fun main2() = runBlocking<Unit> {

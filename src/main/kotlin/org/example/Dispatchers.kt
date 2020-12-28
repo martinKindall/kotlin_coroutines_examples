@@ -1,9 +1,6 @@
 package org.example
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 fun showThreadsNames() = runBlocking {
     launch {
@@ -18,4 +15,18 @@ fun showThreadsNames() = runBlocking {
     launch(newSingleThreadContext("My own thread")) {
         println("Default: I am working on ${Thread.currentThread()}")
     }
+}
+
+suspend fun childrenDoNotNeedToBeJoined() = coroutineScope {
+    val request = launch {
+        repeat(3) { i ->
+            launch {
+                delay((i + 1) * 200L)
+                println("Coroutine $i is done")
+            }
+        }
+        println("request: I dont explicitly join the children")
+    }
+
+    println("I am done")
 }
