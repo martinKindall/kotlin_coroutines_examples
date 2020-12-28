@@ -6,8 +6,8 @@ import kotlinx.coroutines.*
 // every coroutine launched in its scope
 // is completed
 
-fun main() = runBlocking {
-    parallelCalculation()
+fun main() = runBlocking<Unit> {
+    showThreadsNames()
 }
 
 fun main2() = runBlocking<Unit> {
