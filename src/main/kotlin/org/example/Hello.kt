@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 // is completed
 
 fun main() = runBlocking {
-    globalScopeIsLikeADaemonThread()
+    parallelCalculation()
 }
 
 fun main2() = runBlocking<Unit> {
