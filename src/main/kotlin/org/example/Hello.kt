@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 // is completed
 
 fun main() = runBlocking<Unit> {
-    childrenDoNotNeedToBeJoined()
+    plainSequence()
 }
 
 fun main2() = runBlocking<Unit> {
