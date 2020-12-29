@@ -7,7 +7,14 @@ import kotlinx.coroutines.*
 // is completed
 
 fun main() = runBlocking<Unit> {
-    plainSequence()
+    launch {
+        repeat(4) {
+            println("I am not blocked: $it")
+            delay(100L)
+        }
+    }
+
+    flowStream()
 }
 
 fun main2() = runBlocking<Unit> {
